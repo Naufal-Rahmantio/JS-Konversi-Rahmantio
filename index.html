@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aplikasi Konversi Premium</title>
+  <style>
+    :root {
+      --primary-color: #0077cc;
+      --background-color: #f4f7fa;
+      --section-background: #ffffff;
+      --text-color: #333;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: var(--background-color);
+      color: var(--text-color);
+    }
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 30px;
+    }
+    .section {
+      background: var(--section-background);
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      max-width: 800px;
+      transition: transform 0.3s;
+    }
+    .section:hover {
+      transform: scale(1.01);
+    }
+    h2 {
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
+    .converter select, .converter input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      box-sizing: border-box;
+      transition: 0.3s;
+    }
+    .converter select:hover, .converter input:hover {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 8px rgba(0,119,204,0.3);
+    }
+    .input-group {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .input-group div {
+      flex: 1;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      .input-group {
+        flex-direction: column;
+      }
+    }
+    /* Dark Mode */
+    .dark-mode {
+      --background-color: #1e1e2f;
+      --section-background: #292942;
+      --text-color: #f0f0f0;
+    }
+    .toggle-dark {
+      display: block;
+      margin: 0 auto 30px auto;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    .toggle-dark:hover {
+      background: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+<button class="toggle-dark" onclick="toggleDarkMode()">🌙/☀️ Ganti Mode</button>
+<h1>Aplikasi Konversi Modular</h1>
+
+<!-- SUHU -->
+<div class="section">
+  <h2>Konversi Suhu</h2>
+  <div class="converter">
+    <select id="suhuSelect" onchange="resetInput('suhu')">
+      <option disabled selected>Pilih Konversi Suhu</option>
+      <option value="c_f">Celcius ↔ Fahrenheit</option>
+      <option value="c_k">Celcius ↔ Kelvin</option>
+      <option value="c_r">Celcius ↔ Reamur</option>
+    </select>
+    <div class="input-group">
+      <div><input type="text" id="suhuInput1" placeholder="Input 1" oninput="convert('suhu',1)" onkeydown="validateInput(event)"></div>
+      <div><input type="text" id="suhuInput2" placeholder="Input 2" oninput="convert('suhu',2)" onkeydown="validateInput(event)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PANJANG -->
+<div class="section">
+  <h2>Konversi Panjang</h2>
+  <div class="converter">
+    <select id="panjangSelect" onchange="resetInput('panjang')">
+      <option disabled selected>Pilih Konversi Panjang</option>
+      <option value="m_cm">Meter ↔ Centimeter</option>
+      <option value="m_km">Meter ↔ Kilometer</option>
+      <option value="m_ft">Meter ↔ Feet</option>
+      <option value="cm_mm">Centimeter ↔ Millimeter</option>
+    </select>
+    <div class="input-group">
+      <div><input type="text" id="panjangInput1" placeholder="Input 1" oninput="convert('panjang',1)" onkeydown="validateInput(event)"></div>
+      <div><input type="text" id="panjangInput2" placeholder="Input 2" oninput="convert('panjang',2)" onkeydown="validateInput(event)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BERAT -->
+<div class="section">
+  <h2>Konversi Berat & Volume</h2>
+  <div class="converter">
+    <select id="beratSelect" onchange="resetInput('berat')">
+      <option disabled selected>Pilih Konversi Berat/Volume</option>
+      <option value="l_ml">Liter ↔ Mililiter</option>
+      <option value="l_kg_beras">Liter ↔ Kilogram (Beras/Tepung)</option>
+      <option value="l_kg_air">Liter ↔ Kilogram (Air/Susu)</option>
+    </select>
+    <div class="input-group">
+      <div><input type="text" id="beratInput1" placeholder="Input 1" oninput="convert('berat',1)" onkeydown="validateInput(event)"></div>
+      <div><input type="text" id="beratInput2" placeholder="Input 2" oninput="convert('berat',2)" onkeydown="validateInput(event)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- AREA -->
+<div class="section">
+  <h2>Konversi Area</h2>
+  <div class="converter">
+    <select id="areaSelect" onchange="resetInput('area')">
+      <option disabled selected>Pilih Konversi Area</option>
+      <option value="ha_m2">Hektar ↔ Meter²</option>
+      <option value="bouw_m2">Bouw ↔ Meter²</option>
+      <option value="are_m2">Are ↔ Meter²</option>
+    </select>
+    <div class="input-group">
+      <div><input type="text" id="areaInput1" placeholder="Input 1" oninput="convert('area',1)" onkeydown="validateInput(event)"></div>
+      <div><input type="text" id="areaInput2" placeholder="Input 2" oninput="convert('area',2)" onkeydown="validateInput(event)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WAKTU -->
+<div class="section">
+  <h2>Konversi Waktu</h2>
+  <div class="converter">
+    <select id="waktuSelect" onchange="resetInput('waktu')">
+      <option disabled selected>Pilih Konversi Waktu</option>
+      <option value="jam_menit">Jam ↔ Menit</option>
+      <option value="jam_detik">Jam ↔ Detik</option>
+    </select>
+    <div class="input-group">
+      <div><input type="text" id="waktuInput1" placeholder="Input 1" oninput="convert('waktu',1)" onkeydown="validateInput(event)"></div>
+      <div><input type="text" id="waktuInput2" placeholder="Input 2" oninput="convert('waktu',2)" onkeydown="validateInput(event)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- KALORI -->
+<div class="section">
+  <h2>Konversi Kalori</h2>
+  <div class="converter">
+    <select id="kaloriSelect" onchange="resetInput('kalori')">
+      <option disabled selected>Pilih Konversi Kalori</option>
+      <option value="g_kalori_lemak">Gram ↔ Kalori (Lemak)</option>
+      <option value="g_kalori_protein">Gram ↔ Kalori (Protein)</option>
+      <option value="g_kalori_karbo">Gram ↔ Kalori (Karbohidrat)</option>
+    </select>
+    <div class="input-group">
+      <div><input type="text" id="kaloriInput1" placeholder="Input 1" oninput="convert('kalori',1)" onkeydown="validateInput(event)"></div>
+      <div><input type="text" id="kaloriInput2" placeholder="Input 2" oninput="convert('kalori',2)" onkeydown="validateInput(event)"></div>
+    </div>
+  </div>
+</div>
+<script>
+  let isUpdating = false;
+
+  function validateInput(event) {
+    const allowed = ["Backspace", "Tab", "ArrowLeft", "ArrowRight", "Delete", "-", ".", "Enter"];
+    if (allowed.includes(event.key) || /^[0-9]$/.test(event.key)) {
+      return;
+    } else {
+      event.preventDefault();
+    }
+  }
+
+  function resetInput(section) {
+    document.getElementById(section + 'Input1').value = "";
+    document.getElementById(section + 'Input2').value = "";
+  }
+
+  function convert(section, from) {
+    if (isUpdating) return;
+    isUpdating = true;
+
+    let select = document.getElementById(section + 'Select').value;
+    let input1 = document.getElementById(section + 'Input1');
+    let input2 = document.getElementById(section + 'Input2');
+
+    let val1 = parseFloat(input1.value);
+    let val2 = parseFloat(input2.value);
+
+    if (from === 1 && !isNaN(val1)) {
+      input2.value = konversi(select, val1, true);
+    } else if (from === 2 && !isNaN(val2)) {
+      input1.value = konversi(select, val2, false);
+    }
+    isUpdating = false;
+  }
+
+  function konversi(type, val, forward = true) {
+    switch(type) {
+      case 'c_f': return forward ? ((val * 9/5) + 32).toFixed(2) : ((val - 32) * 5/9).toFixed(2);
+      case 'c_k': return forward ? (val + 273.15).toFixed(2) : (val - 273.15).toFixed(2);
+      case 'c_r': return forward ? (val * 4/5).toFixed(2) : (val * 5/4).toFixed(2);
+      case 'm_cm': return forward ? (val * 100).toFixed(2) : (val / 100).toFixed(2);
+      case 'm_km': return forward ? (val / 1000).toFixed(4) : (val * 1000).toFixed(2);
+      case 'm_ft': return forward ? (val * 3.28084).toFixed(2) : (val / 3.28084).toFixed(2);
+      case 'cm_mm': return forward ? (val * 10).toFixed(2) : (val / 10).toFixed(2);
+      case 'l_ml': return forward ? (val * 1000).toFixed(2) : (val / 1000).toFixed(2);
+      case 'l_kg_beras': return forward ? (val * 0.75).toFixed(2) : (val / 0.75).toFixed(2);
+      case 'l_kg_air': return forward ? (val * 1).toFixed(2) : (val / 1).toFixed(2);
+      case 'ha_m2': return forward ? (val * 10000).toFixed(2) : (val / 10000).toFixed(2);
+      case 'bouw_m2': return forward ? (val * 7096.5).toFixed(2) : (val / 7096.5).toFixed(2);
+      case 'are_m2': return forward ? (val * 100).toFixed(2) : (val / 100).toFixed(2);
+      case 'jam_menit': return forward ? (val * 60).toFixed(2) : (val / 60).toFixed(2);
+      case 'jam_detik': return forward ? (val * 3600).toFixed(2) : (val / 3600).toFixed(2);
+      case 'g_kalori_lemak': return forward ? (val * 9).toFixed(2) : (val / 9).toFixed(2);
+      case 'g_kalori_protein': return forward ? (val * 4).toFixed(2) : (val / 4).toFixed(2);
+      case 'g_kalori_karbo': return forward ? (val * 4).toFixed(2) : (val / 4).toFixed(2);
+      default: return "";
+    }
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
+</script>
+
+</body>
+</html>
